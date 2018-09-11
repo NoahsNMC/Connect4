@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 
 namespace CodingActivity_TicTacToe_ConsoleGame
 {
@@ -371,15 +372,15 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             {
                 ConsoleUtil.DisplayReset();
 
-                ConsoleUtil.DisplayPromptMessage(promptMessage + "(yes/no)");
+                ConsoleUtil.DisplayPromptMessage(promptMessage + " (yes/no): ");
                 userResponse = Console.ReadLine();
 
-                if (userResponse.ToUpper() == "YES")
+                if (Regex.IsMatch(userResponse.ToLower(), "^y*$|^yes$"))
                 {
                     validResponse = true;
                     yesNoChoice = true;
                 }
-                else if (userResponse.ToUpper() == "NO")
+                else if (Regex.IsMatch(userResponse.ToLower(), "^n*$|^no$"))
                 {
                     validResponse = true;
                     yesNoChoice = false;

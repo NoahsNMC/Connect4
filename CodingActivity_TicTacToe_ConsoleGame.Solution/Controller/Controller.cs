@@ -112,7 +112,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     //
                     // Prompt user to play another round
                     //
-                    if (_gameView.DisplayNewRoundPrompt())
+                    _playingGame = _gameView.DisplayNewRoundPrompt();
+
+                    if (_playingGame)
                     {
                         _gameboard.InitializeGameboard();
                         _gameView.InitializeView();
