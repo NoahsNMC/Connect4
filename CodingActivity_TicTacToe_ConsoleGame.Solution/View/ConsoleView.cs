@@ -372,7 +372,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             {
                 ConsoleUtil.DisplayReset();
 
-                ConsoleUtil.DisplayPromptMessage(promptMessage + " (yes/no): ");
+                ConsoleUtil.DisplayPromptMessage(promptMessage + "\r\n (yes/no): ");
                 userResponse = Console.ReadLine();
 
                 if (Regex.IsMatch(userResponse.ToLower(), "^y*$|^yes$"))
