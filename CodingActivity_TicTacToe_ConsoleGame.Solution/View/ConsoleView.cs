@@ -177,22 +177,23 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         {
             StringBuilder sb = new StringBuilder();
 
-            ConsoleUtil.HeaderText = "The Tic-tac-toe Game";
+            ConsoleUtil.HeaderText = "Connect 4: The Game";
             ConsoleUtil.DisplayReset();
 
-            ConsoleUtil.DisplayMessage("Written by John Velis");
-            ConsoleUtil.DisplayMessage("Northwestern Michigan College");
+            ConsoleUtil.DisplayMessage("Written by Noah Osterhout | Jason Luckhardt | Chris Coznowski");
+            ConsoleUtil.DisplayMessage("Wolf Group Technolgies");
             Console.WriteLine();
 
             sb.Clear();
-            sb.AppendFormat("This application is designed to allow two players to play ");
-            sb.AppendFormat("a game of tic-tac-toe. The rules are the standard rules for the ");
-            sb.AppendFormat("game with each player taking a turn.");
+            sb.AppendFormat("Welcome to Connect 4: The Game! This is Connect 4 but in the console ");
+            sb.AppendFormat("for Windows. The standard rules for Connect 4 apply, and this is just a two player ");
+            sb.AppendFormat("game with each player taking a turn. Good luck and have fun, but remeber, if you find a bug ");
+            sb.AppendFormat("it's most likely a feature! ");
             ConsoleUtil.DisplayMessage(sb.ToString());
             Console.WriteLine();
 
             sb.Clear();
-            sb.AppendFormat("Your first task will be to set up your account details.");
+            sb.AppendFormat("You will be redirecred to the main menu.");
             ConsoleUtil.DisplayMessage(sb.ToString());
 
             DisplayContinuePrompt();
