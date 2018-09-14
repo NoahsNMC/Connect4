@@ -25,10 +25,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         private const int GAMEBOARD_VERTICAL_LOCATION = 4;
 
-        private const int POSITIONPROMPT_VERTICAL_LOCATION = 12;
-        private const int POSITIONPROMPT_HORIZONTAL_LOCATION = 3;
+        private int POSITIONPROMPT_VERTICAL_LOCATION = 12;
+        private int POSITIONPROMPT_HORIZONTAL_LOCATION = 3;
 
-        private const int MESSAGEBOX_VERTICAL_LOCATION = 15;
+        private const int MESSAGEBOX_VERTICAL_MARGIN = 2;
 
         private const int TOP_LEFT_ROW = 3;
         private const int TOP_LEFT_COLUMN = 6;
@@ -177,10 +177,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         {
             StringBuilder sb = new StringBuilder();
 
-            ConsoleUtil.HeaderText = "Connect 4: The Game";
+            ConsoleUtil.HeaderText = "Connect 4: The Movie The Game!";
             ConsoleUtil.DisplayReset();
 
-            ConsoleUtil.DisplayMessage("Written by Noah Osterhout | Jason Luckhardt | Chris Coznowski");
+            ConsoleUtil.DisplayMessage("Programmed by Noah Osterhout, Jason Luckhardt, and Chris Coznowski.");
             ConsoleUtil.DisplayMessage("Wolf Group Technolgies");
             Console.WriteLine();
 
@@ -296,7 +296,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
             StringBuilder sb = new StringBuilder();
 
-            Console.SetCursorPosition(0, MESSAGEBOX_VERTICAL_LOCATION);
+            Console.SetCursorPosition(0, _gameboard.MaxNumOfRowsColumns * 2 + 1 + GAMEBOARD_VERTICAL_LOCATION + MESSAGEBOX_VERTICAL_MARGIN);
             Console.WriteLine(leftMargin + topBottom);
 
             Console.WriteLine(ConsoleUtil.Center("Game Status"));
@@ -307,37 +307,73 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
-        /// display the current game board
+        /// Displays the gameboard based on _gameboard.MaxNumOfRowsColumns.
         /// </summary>
         private void DisplayGameboard()
         {
-            //
-            // move cursor below header
-            //
-            Console.SetCursorPosition(0, GAMEBOARD_VERTICAL_LOCATION);
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
 
-            Console.Write("\t\t\t        |---+---+---|\n");
+            char ulCorner = '\u2554';
+            char llCorner = '\u255A';
+            char urCorner = '\u2557';
+            char lrCorner = '\u255D';
+            char vertical = '\u2551';
+            string horizontal = "\u2550\u2550";
+            char cross = '\u256C';
+            char crossBottom = '\u2569';
+            char crossRight = '\u2560';
+            char crossLeft = '\u2563';
+            char crossTop = '\u2566';
+            string space = "  ";
 
-            for (int i = 0; i < 3; i++)
+
+            int horizontal_offset = ConsoleUtil.WindowWidth / 2;
+            int max = _gameboard.MaxNumOfRowsColumns * 2 + 1;
+            int min = 0;
+
+            for (int row = 0; row < max; row++)
             {
-                Console.Write("\t\t\t        | ");
-
-                for (int j = 0; j < 3; j++)
+                Console.SetCursorPosition(horizontal_offset - max / 2 - _gameboard.MaxNumOfRowsColumns / 2, GAMEBOARD_VERTICAL_LOCATION + row);
+                for (int column = 0; column < max; column++)
                 {
-                    if (_gameboard.PositionState[i, j] == Gameboard.PlayerPiece.None)
+                    if (!(row % 2 == 1 && column % 2 == 1)) // Not odd row and column. In other words not a player space.
                     {
-                        Console.Write(" " + " | ");
+                        if (row == min && column == min)
+                            Console.Write(ulCorner);
+                        else if (row == max - 1 && column == max - 1)
+                            Console.Write(lrCorner);
+                        else if (row == min && column == max - 1)
+                            Console.Write(urCorner);
+                        else if (row == max - 1 && column == min)
+                            Console.Write(llCorner);
+                        else if (row % 2 == 0 && column == min) // if row is even and column is 0. Draw a right spacer.
+                            Console.Write(crossRight);
+                        else if (row % 2 == 0 && column == max - 1) // if row is even and column is max -1. Draw a left spacer.
+                            Console.Write(crossLeft);
+                        else if (column % 2 == 0 && row == 0) // if column is even and row is 0. Draw a top spacer.
+                            Console.Write(crossTop);
+                        else if (column % 2 == 0 && row == max - 1) // if column is even and row is max -1. Draw a bottom spacer.
+                            Console.Write(crossBottom);
+                        else if (row == min || row == max - 1)
+                            Console.Write(horizontal);
+                        else if (column == min || column == max - 1)
+                            Console.Write(vertical);
+                        else if (row % 2 == 0 && column % 2 == 1) // even row and odd column. Draw a horizontal spacer.
+                            Console.Write(horizontal);
+                        else if (row % 2 == 1 && column % 2 == 0) // odd row and even column. Draw a vertical spacer.
+                            Console.Write(vertical);
+                        else if (row % 2 == 0 && column % 2 == 0) // even row and even column. Draw a cross spacer.
+                            Console.Write(cross);
                     }
                     else
                     {
-                        Console.Write(_gameboard.PositionState[i, j] + " | ");
+                        Console.Write(space);
+                        //Console.CursorLeft;
+                        //Console.CursorTop;
                     }
-
                 }
-
-                Console.Write("\n\t\t\t        |---+---+---|\n");
+                Console.WriteLine();
             }
-
         }
 
         /// <summary>
@@ -346,6 +382,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <param name="coordinateType"></param>
         private void DisplayPositionPrompt(string coordinateType)
         {
+            POSITIONPROMPT_VERTICAL_LOCATION = _gameboard.MaxNumOfRowsColumns * 2 + 1 + GAMEBOARD_VERTICAL_LOCATION;
+
             //
             // Clear line by overwriting with spaces
             //
