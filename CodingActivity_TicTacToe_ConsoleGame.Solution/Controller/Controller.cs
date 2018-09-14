@@ -46,7 +46,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             InitializeGame();
             PlayGame();
         }
-        
+
         #endregion
 
         #region METHODS
@@ -151,11 +151,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                             break;
 
                         case Gameboard.GameboardState.PlayerXTurn:
-                            ManagePlayerTurn(Gameboard.PlayerPiece.X);
+                            ManagePlayerTurn(PlayerPiece.X);
                             break;
 
                         case Gameboard.GameboardState.PlayerOTurn:
-                            ManagePlayerTurn(Gameboard.PlayerPiece.O);
+                            ManagePlayerTurn(PlayerPiece.O);
                             break;
 
                         case Gameboard.GameboardState.PlayerXWin:
@@ -192,33 +192,46 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
-        /// Attempt to get a valid player move. 
+        /// Attempt to get a valid player move.
         /// If the player chooses a location that is taken, the CurrentRoundState remains unchanged,
         /// the player is given a message indicating so, and the game loop is cycled to allow the player
         /// to make a new choice.
         /// </summary>
         /// <param name="currentPlayerPiece">identify as either the X or O player</param>
-        private void ManagePlayerTurn(Gameboard.PlayerPiece currentPlayerPiece)
+        private void ManagePlayerTurn(PlayerPiece currentPlayerPiece)
         {
-            GameboardPosition gameboardPosition = _gameView.GetPlayerPositionChoice();
+            int gameboardColumn = _gameView.GetPlayerPositionChoice();
 
             if (_gameView.CurrentViewState != ConsoleView.ViewState.PlayerUsedMaxAttempts)
             {
                 //
                 // player chose an open position on the game board, add it to the game board
                 //
-                if (_gameboard.GameboardPositionAvailable(gameboardPosition))
+                int row = _gameboard.GameboardPositionAvailable(gameboardColumn);
+                if (row > -1)
                 {
-                    _gameboard.SetPlayerPiece(gameboardPosition, currentPlayerPiece);
+                    _gameView.DisplayPieceDrop(row, gameboardColumn);
+                    _gameboard._board[row, gameboardColumn].Status = currentPlayerPiece;
+                    _gameboard.SetNextPlayer();
+                    ClearBuffer();
                 }
                 //
                 // player chose a taken position on the game board
                 //
                 else
-                {
                     _gameView.DisplayGamePositionChoiceNotAvailableScreen();
-                }
             }
+        }
+
+        //Clears the input buffer because input stacking is a thing.
+        //Works like similarly to ReadKey() but clears any garbage inputs.
+        public void ClearBuffer()
+        {
+            while (Console.KeyAvailable)
+            {
+                Console.ReadKey(true);
+            }
+            Console.ReadKey();
         }
 
         #endregion

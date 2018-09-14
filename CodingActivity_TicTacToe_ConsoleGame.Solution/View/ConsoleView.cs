@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace CodingActivity_TicTacToe_ConsoleGame
 {
@@ -30,11 +31,15 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         private const int MESSAGEBOX_VERTICAL_MARGIN = 2;
 
+        private const int DROP_PEICE_OFFSET = -2;
+
         private const int TOP_LEFT_ROW = 3;
         private const int TOP_LEFT_COLUMN = 6;
 
         private Gameboard _gameboard;
         private ViewState _currentViewStat;
+
+        private static readonly string[] PLAYER_ICONS = { "", "\u2588\u2588", "\u2592\u2592" };
 
         #endregion
 
@@ -325,6 +330,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             char crossLeft = '\u2563';
             char crossTop = '\u2566';
             string space = "  ";
+            string playerX = "\u2588\u2588";
+            string playerO = "\u2592\u2592";
 
 
             int horizontal_offset = ConsoleUtil.WindowWidth / 2;
@@ -365,11 +372,23 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                         else if (row % 2 == 0 && column % 2 == 0) // even row and even column. Draw a cross spacer.
                             Console.Write(cross);
                     }
-                    else
+                    else switch(_gameboard._board[row / 2, column / 2].Status) // This is the first time I've ever used an else switch lol.
                     {
-                        Console.Write(space);
-                        //Console.CursorLeft;
-                        //Console.CursorTop;
+                        case PlayerPiece.NULL: // This might be breaking MVC but it saves me the work of flipping through the board twice.
+                            _gameboard._board[row / 2, column / 2].Row = Console.CursorLeft;
+                            _gameboard._board[row / 2, column / 2].Column = Console.CursorTop;
+                            _gameboard._board[row / 2, column / 2].Status = PlayerPiece.None;
+                            Console.Write(space);
+                            break;
+                        case PlayerPiece.X:
+                            Console.Write(playerX);
+                            break;
+                        case PlayerPiece.O:
+                            Console.Write(playerO);
+                            break;
+                        case PlayerPiece.None:
+                            Console.Write(space);
+                            break;
                     }
                 }
                 Console.WriteLine();
@@ -442,8 +461,44 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// Note: The ConsoleView is allowed access to the GameboardPosition struct.
         /// </summary>
         /// <returns>GameboardPosition</returns>
-        public GameboardPosition GetPlayerPositionChoice()
+        public int GetPlayerPositionChoice()
         {
+            Console.CursorVisible = false;
+            Console.OutputEncoding = System.Text.Encoding.Unicode;
+            ConsoleKeyInfo keyInfo;
+            int player_column = 0;
+            do
+            {
+                Console.SetCursorPosition(_gameboard._board[0, player_column].Row, _gameboard._board[0, player_column].Column + DROP_PEICE_OFFSET);
+                Console.Write(PLAYER_ICONS[(int)_gameboard.CurrentRoundState]);
+                keyInfo = Console.ReadKey();
+                //Console.SetCursorPosition(Console.CursorLeft -3, Console.CursorTop);
+                Console.SetCursorPosition(_gameboard._board[0, player_column].Row, _gameboard._board[0, player_column].Column + DROP_PEICE_OFFSET);
+                Console.Write("  ");
+                switch (keyInfo.Key)
+                {
+                    case ConsoleKey.LeftArrow:
+                        if (player_column > 0)
+                            player_column--;
+                        break;
+                    case ConsoleKey.RightArrow:
+                        if (player_column < _gameboard.MaxNumOfRowsColumns -1)
+                            player_column++;
+                        break;
+                    case ConsoleKey.F1:
+                        break;
+                    case ConsoleKey.F2:
+                        break;
+                    case ConsoleKey.F3:
+                        break;
+                    case ConsoleKey.F4:
+                        break;
+                    default:
+                        break;
+                }
+            } while (keyInfo.Key != ConsoleKey.Enter);
+
+            /*
             //
             // Initialize gameboardPosition with -1 values
             //
@@ -460,10 +515,28 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             if (CurrentViewState != ViewState.PlayerUsedMaxAttempts)
             {
                 gameboardPosition.Column = PlayerCoordinateChoice("Column");
+            }*/
+
+            return player_column;
+
+        }
+
+        public void DisplayPieceDrop(int endRow, int column)
+        {
+            int row;
+            for (row = 0; row <= endRow; row++)
+            {
+                Console.SetCursorPosition(_gameboard._board[row, column].Row, _gameboard._board[row, column].Column);
+                Console.Write(PLAYER_ICONS[(int)_gameboard.CurrentRoundState]);
+
+                Thread.Sleep(100);
+
+                //Console.SetCursorPosition(Console.CursorLeft -3, Console.CursorTop);
+                Console.SetCursorPosition(_gameboard._board[row, column].Row, _gameboard._board[row, column].Column);
+                Console.Write("  ");
             }
-
-            return gameboardPosition;
-
+            Console.SetCursorPosition(_gameboard._board[row -1, column].Row, _gameboard._board[row -1, column].Column);
+            Console.Write(PLAYER_ICONS[(int)_gameboard.CurrentRoundState]);
         }
 
         /// <summary>
