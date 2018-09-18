@@ -288,14 +288,35 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
+        /// displays game rules
+        /// </summary>
+        public void DisplayGameRules()
+        {
+            ConsoleUtil.HeaderText = "Connect 4: The Game | Rules";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("The below are the following rules of Connect 4: The Game");
+
+            Console.WriteLine();
+
+            ConsoleUtil.DisplayMessage("(1) Two players are required to play the game \n ");
+            ConsoleUtil.DisplayMessage("(2) Each player will take their turns dropping their game piece in the selected column \n ");
+            ConsoleUtil.DisplayMessage("(3) The first player to get 4 game pieces in a row, either vertical or horizontal, wins the game \n ");
+
+            Console.WriteLine();
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
         /// display a closing screen when the user quits the application
         /// </summary>
         public void DisplayClosingScreen()
         {
-            ConsoleUtil.HeaderText = "The Tic-tac-toe Game";
+            ConsoleUtil.HeaderText = "Connect 4: The Game | Quit Game";
             ConsoleUtil.DisplayReset();
 
-            ConsoleUtil.DisplayMessage("Thank you for using The Tic-tac-toe Game.");
+            ConsoleUtil.DisplayMessage("Thank you for playing Connect 4!.");
 
             DisplayContinuePrompt();
         }

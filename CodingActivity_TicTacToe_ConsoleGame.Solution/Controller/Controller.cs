@@ -14,6 +14,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         //
         private bool _playingGame;
         private bool _playingRound;
+        private bool _sendBack = false;
 
         private int _roundNumber;
 
@@ -48,19 +49,42 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
             _gameView.DisplayWelcomeScreen();
 
-            _usersChoice =  _gameView.DisplayMainMenuScreen();
 
-            switch (_usersChoice)
+            while (!_sendBack)
             {
-                case 1:
-                    PlayGame();
-                    break;
+                _usersChoice = _gameView.DisplayMainMenuScreen();
 
-                default:
-                    break;
+                switch (_usersChoice)
+                {
+                    case 1:
+                        PlayGame();
+                        break;
+
+                    case 2:
+                        _gameView.DisplayGameRules();
+                        break;
+
+                    case 3:
+                        //
+                        break;
+
+                    case 4:
+                        //
+                        break;
+
+                    case 5:
+                        //
+                        break;
+
+                    case 6:
+                        _gameView.DisplayClosingScreen();
+                        _sendBack = true;
+                        break;
+
+                    default:
+                        break;
+                }
             }
-
-
 
         }
 
