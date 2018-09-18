@@ -200,6 +200,29 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
+        /// display main menu screen
+        /// </summary>
+        public void DisplayMainMenuScreen()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            ConsoleUtil.HeaderText = "Connect 4: The Game | Main Menu";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("Welcome to the Main Menu!");
+            ConsoleUtil.DisplayMessage("Please choose a menu option to continue");
+
+            ConsoleUtil.DisplayMessage("(1) Play Game \n ");
+            ConsoleUtil.DisplayMessage("(2) Gane Rules \n ");
+            ConsoleUtil.DisplayMessage("(3) Current Game Stats \n ");
+            ConsoleUtil.DisplayMessage("(4) Previous Game Stats \n ");
+            ConsoleUtil.DisplayMessage("(5) Save Game \n ");
+            ConsoleUtil.DisplayMessage("(6) Quit Game \n ");
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
         /// display a closing screen when the user quits the application
         /// </summary>
         public void DisplayClosingScreen()

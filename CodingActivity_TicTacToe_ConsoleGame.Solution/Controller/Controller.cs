@@ -72,6 +72,13 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             _gameboard.InitializeGameboard();
         }
 
+        public void MainMenuOption()
+        {
+            _gameView.DisplayMainMenuScreen();
+
+
+
+        }
 
         /// <summary>
         /// Game Loop
@@ -79,6 +86,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         public void PlayGame()
         {
             _gameView.DisplayWelcomeScreen();
+
+            MainMenuOption();
 
             while (_playingGame)
             {
