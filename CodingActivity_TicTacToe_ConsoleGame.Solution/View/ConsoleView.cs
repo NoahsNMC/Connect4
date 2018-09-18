@@ -167,7 +167,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             ConsoleUtil.HeaderText = "Position Choice Unavailable";
             ConsoleUtil.DisplayReset();
 
-            sb.Append(" It appears that you have chosen a position that is all ready");
+            sb.Append(" It appears that you have selectedn a position that is all ready");
             sb.Append(" taken. Please try again.");
 
             DisplayMessageBox(sb.ToString());
@@ -207,24 +207,84 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <summary>
         /// display main menu screen
         /// </summary>
-        public void DisplayMainMenuScreen()
+        public int DisplayMainMenuScreen()
         {
-            StringBuilder sb = new StringBuilder();
+            bool validResponse = false;
+            int usersChoice = 0;
 
-            ConsoleUtil.HeaderText = "Connect 4: The Game | Main Menu";
-            ConsoleUtil.DisplayReset();
+            while (!validResponse)
+            {
 
-            ConsoleUtil.DisplayMessage("Welcome to the Main Menu!");
-            ConsoleUtil.DisplayMessage("Please choose a menu option to continue");
+                StringBuilder sb = new StringBuilder();
 
-            ConsoleUtil.DisplayMessage("(1) Play Game \n ");
-            ConsoleUtil.DisplayMessage("(2) Gane Rules \n ");
-            ConsoleUtil.DisplayMessage("(3) Current Game Stats \n ");
-            ConsoleUtil.DisplayMessage("(4) Previous Game Stats \n ");
-            ConsoleUtil.DisplayMessage("(5) Save Game \n ");
-            ConsoleUtil.DisplayMessage("(6) Quit Game \n ");
+                ConsoleUtil.HeaderText = "Connect 4: The Game | Main Menu";
+                ConsoleUtil.DisplayReset();
 
-            DisplayContinuePrompt();
+                ConsoleUtil.DisplayMessage("Welcome to the Main Menu!");
+                ConsoleUtil.DisplayMessage("Please choose a menu option to continue");
+
+                Console.WriteLine();
+
+                ConsoleUtil.DisplayMessage("(1) Play Game \n ");
+                ConsoleUtil.DisplayMessage("(2) Gane Rules \n ");
+                ConsoleUtil.DisplayMessage("(3) Current Game Stats \n ");
+                ConsoleUtil.DisplayMessage("(4) Previous Game Stats \n ");
+                ConsoleUtil.DisplayMessage("(5) Save Game \n ");
+                ConsoleUtil.DisplayMessage("(6) Quit Game \n ");
+
+                Console.WriteLine();
+
+                ConsoleUtil.DisplayMessage("Please enter the menu option \n ");
+
+
+                string userResponse = Console.ReadLine();
+                var isNumeric = int.TryParse(userResponse, out usersChoice);
+
+
+                Console.WriteLine("DEBUG:" + usersChoice);
+                Console.WriteLine();
+                Console.ReadKey();
+
+                switch (usersChoice)
+                {
+                    case 0:
+                        ConsoleUtil.DisplayMessage("It looks like you entered a wrong menu choice, please try again");
+                        validResponse = false;
+                        break;
+                    case 1:
+                        ConsoleUtil.DisplayMessage("You selected to play a new game ");
+                        validResponse = true;
+                        break;
+                    case 2:
+                        ConsoleUtil.DisplayMessage("You selected to view game rules ");
+                        validResponse = true;
+                        break;
+                    case 3:
+                        ConsoleUtil.DisplayMessage("You selected to view current game stats ");
+                        validResponse = true;
+                        break;
+                    case 4:
+                        ConsoleUtil.DisplayMessage("You selected to view previous game stats ");
+                        validResponse = true;
+                        break;
+                    case 5:
+                        ConsoleUtil.DisplayMessage("You selected to save the game ");
+                        validResponse = true;
+                        break;
+                    case 6:
+                        ConsoleUtil.DisplayMessage("You selected to quit the game ");
+                        validResponse = true;
+                        break;
+
+                    default:
+                        break;
+                }
+
+
+            }
+
+            return usersChoice;
+
         }
 
         /// <summary>

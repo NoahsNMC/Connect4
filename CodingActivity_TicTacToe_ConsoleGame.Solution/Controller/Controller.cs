@@ -23,6 +23,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         private int _playerXNumberOfWins;
         private int _playerONumberOfWins;
         private int _numberOfCatsGames;
+        private int _usersChoice;
 
         //
         // instantiate  a Gameboard object
@@ -44,7 +45,23 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         public GameController()
         {
             InitializeGame();
-            PlayGame();
+
+            _gameView.DisplayWelcomeScreen();
+
+            _usersChoice =  _gameView.DisplayMainMenuScreen();
+
+            switch (_usersChoice)
+            {
+                case 1:
+                    PlayGame();
+                    break;
+
+                default:
+                    break;
+            }
+
+
+
         }
 
         #endregion
@@ -72,22 +89,11 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             _gameboard.InitializeGameboard();
         }
 
-        public void MainMenuOption()
-        {
-            _gameView.DisplayMainMenuScreen();
-
-
-
-        }
-
         /// <summary>
         /// Game Loop
         /// </summary>
         public void PlayGame()
         {
-            _gameView.DisplayWelcomeScreen();
-
-            MainMenuOption();
 
             while (_playingGame)
             {
@@ -139,7 +145,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 }
             }
 
-            _gameView.DisplayClosingScreen();
+            // Removing _gameView.DisplayClosingScreen(); because main menu will handle this
         }
 
         /// <summary>
