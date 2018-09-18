@@ -9,16 +9,17 @@ using System.Runtime.Serialization;
 
 namespace CodingActivity_TicTacToe_ConsoleGame
 {
+    public enum PlayerPiece
+    {
+        NULL,
+        X,
+        O,
+        None
+    }
+
     public class Gameboard
     {
         #region ENUMS
-
-        public enum PlayerPiece
-        {
-            X,
-            O,
-            None
-        }
 
         public enum GameboardState
         {
@@ -34,11 +35,13 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         #region FIELDS
 
-        private const int MAX_NUM_OF_ROWS_COLUMNS = 3;
+        private const int MAX_NUM_OF_ROWS_COLUMNS = 7;
 
         private PlayerPiece[,] _positionState;
 
         private GameboardState _currentRoundState;
+
+        public GameboardPosition[,] _board = new GameboardPosition[MAX_NUM_OF_ROWS_COLUMNS, MAX_NUM_OF_ROWS_COLUMNS];
 
         #endregion
 
@@ -98,23 +101,24 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <summary>
         /// Determine if the game board position is taken
         /// </summary>
-        /// <param name="gameboardPosition"></param>
-        /// <returns>true if position is open</returns>
-        public bool GameboardPositionAvailable(GameboardPosition gameboardPosition)
+        /// <param name="gameboardColumn"></param>
+        /// <returns>-1 if there is no space in that column otherwise it will return the row number.</returns>
+        public int GameboardPositionAvailable(int gameboardColumn)
         {
             //
             // Confirm that the board position is empty
             // Note: gameboardPosition converted to array index by subtracting 1
             //
 
-            if (_positionState[gameboardPosition.Row - 1, gameboardPosition.Column - 1] == PlayerPiece.None)
+            for (int row = MaxNumOfRowsColumns-1; row >= 0; row--)
             {
-                return true;
+                if(_board[row, gameboardColumn].Status == PlayerPiece.None)
+                {
+                    return row;
+                }
             }
-            else
-            {
-                return false;
-            }
+
+            return -1;
         }
 
         /// <summary>
@@ -141,7 +145,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 _currentRoundState = GameboardState.CatsGame;
             }
         }
-        
+
         public bool IsCatsGame()
         {
             //
@@ -217,28 +221,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
-        /// Add player's move to the game board.
-        /// </summary>
-        /// <param name="gameboardPosition"></param>
-        /// <param name="PlayerPiece"></param>
-        public void SetPlayerPiece(GameboardPosition gameboardPosition, PlayerPiece PlayerPiece)
-        {
-            //
-            // Row and column value adjusted to match array structure
-            // Note: gameboardPosition converted to array index by subtracting 1
-            //
-            _positionState[gameboardPosition.Row - 1, gameboardPosition.Column - 1] = PlayerPiece;
-
-            //
-            // Change game board state to next player
-            //
-            SetNextPlayer();
-        }
-
-        /// <summary>
         /// Switch the game board state to the next player.
         /// </summary>
-        private void SetNextPlayer()
+        public void SetNextPlayer()
         {
             if (_currentRoundState == GameboardState.PlayerXTurn)
             {
