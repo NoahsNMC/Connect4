@@ -309,6 +309,63 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
+        /// displays current game stats
+        /// </summary>
+        public void DisplayCurrentGameStats()
+        {
+            ConsoleUtil.HeaderText = "Connect 4: The Game | Current Game Stats";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("The below stats are the stats for the current game of Connect 4: The Game");
+
+            Console.WriteLine();
+
+            //TODO: Display current game stats here
+
+            Console.WriteLine();
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
+        /// displays previous game stats
+        /// </summary>
+        public void DisplayPreviousGameStats()
+        {
+            ConsoleUtil.HeaderText = "Connect 4: The Game | Previous Game Stats";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("The below stats are the stats for the previous game of Connect 4: The Game");
+
+            Console.WriteLine();
+
+            //TODO: Display previous game stats here
+
+            Console.WriteLine();
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
+        /// displays current game stats
+        /// </summary>
+        public void DisplaySaveGameScreen()
+        {
+            ConsoleUtil.HeaderText = "Connect 4: The Game | Save Game";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("We are saving your game.  Please do not turn off Connect 4: The Game");
+
+            Console.WriteLine();
+
+            //TODO: Save game for user
+
+            Console.WriteLine();
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
         /// display a closing screen when the user quits the application
         /// </summary>
         public void DisplayClosingScreen()

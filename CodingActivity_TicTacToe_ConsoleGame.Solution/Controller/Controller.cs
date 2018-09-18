@@ -62,18 +62,22 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
                     case 2:
                         _gameView.DisplayGameRules();
+                        _sendBack = false;
                         break;
 
                     case 3:
-                        //
+                        _gameView.DisplayCurrentGameStats();
+                        _sendBack = false;
                         break;
 
                     case 4:
-                        //
+                        _gameView.DisplayPreviousGameStats();
+                        _sendBack = false;
                         break;
 
                     case 5:
-                        //
+                        _gameView.DisplaySaveGameScreen();
+                        _sendBack = false;
                         break;
 
                     case 6:
