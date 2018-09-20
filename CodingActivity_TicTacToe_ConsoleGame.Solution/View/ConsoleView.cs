@@ -167,7 +167,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             ConsoleUtil.HeaderText = "Position Choice Unavailable";
             ConsoleUtil.DisplayReset();
 
-            sb.Append(" It appears that you have chosen a position that is all ready");
+            sb.Append(" It appears that you have selectedn a position that is all ready");
             sb.Append(" taken. Please try again.");
 
             DisplayMessageBox(sb.ToString());
@@ -239,14 +239,175 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
+        /// display main menu screen
+        /// </summary>
+        public int DisplayMainMenuScreen()
+        {
+            bool validResponse = false;
+            int usersChoice = 0;
+
+            while (!validResponse)
+            {
+
+                StringBuilder sb = new StringBuilder();
+
+                ConsoleUtil.HeaderText = "Connect 4: The Game | Main Menu";
+                ConsoleUtil.DisplayReset();
+
+                ConsoleUtil.DisplayMessage("Welcome to the Main Menu!");
+                ConsoleUtil.DisplayMessage("Please choose a menu option to continue");
+
+                Console.WriteLine();
+
+                ConsoleUtil.DisplayMessage("(1) Play Game \n ");
+                ConsoleUtil.DisplayMessage("(2) Gane Rules \n ");
+                ConsoleUtil.DisplayMessage("(3) Current Game Stats \n ");
+                ConsoleUtil.DisplayMessage("(4) Previous Game Stats \n ");
+                ConsoleUtil.DisplayMessage("(5) Save Game \n ");
+                ConsoleUtil.DisplayMessage("(6) Quit Game \n ");
+
+                Console.WriteLine();
+
+                ConsoleUtil.DisplayMessage("Please enter the menu option \n ");
+
+
+                string userResponse = Console.ReadLine();
+                var isNumeric = int.TryParse(userResponse, out usersChoice);
+
+
+                Console.WriteLine("DEBUG:" + usersChoice);
+                Console.WriteLine();
+                Console.ReadKey();
+
+                switch (usersChoice)
+                {
+                    case 0:
+                        ConsoleUtil.DisplayMessage("It looks like you entered a wrong menu choice, please try again");
+                        validResponse = false;
+                        break;
+                    case 1:
+                        ConsoleUtil.DisplayMessage("You selected to play a new game ");
+                        validResponse = true;
+                        break;
+                    case 2:
+                        ConsoleUtil.DisplayMessage("You selected to view game rules ");
+                        validResponse = true;
+                        break;
+                    case 3:
+                        ConsoleUtil.DisplayMessage("You selected to view current game stats ");
+                        validResponse = true;
+                        break;
+                    case 4:
+                        ConsoleUtil.DisplayMessage("You selected to view previous game stats ");
+                        validResponse = true;
+                        break;
+                    case 5:
+                        ConsoleUtil.DisplayMessage("You selected to save the game ");
+                        validResponse = true;
+                        break;
+                    case 6:
+                        ConsoleUtil.DisplayMessage("You selected to quit the game ");
+                        validResponse = true;
+                        break;
+
+                    default:
+                        break;
+                }
+
+
+            }
+
+            return usersChoice;
+
+        }
+
+        /// <summary>
+        /// displays game rules
+        /// </summary>
+        public void DisplayGameRules()
+        {
+            ConsoleUtil.HeaderText = "Connect 4: The Game | Rules";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("The below are the following rules of Connect 4: The Game");
+
+            Console.WriteLine();
+
+            ConsoleUtil.DisplayMessage("(1) Two players are required to play the game \n ");
+            ConsoleUtil.DisplayMessage("(2) Each player will take their turns dropping their game piece in the selected column \n ");
+            ConsoleUtil.DisplayMessage("(3) The first player to get 4 game pieces in a row, either vertical or horizontal, wins the game \n ");
+
+            Console.WriteLine();
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
+        /// displays current game stats
+        /// </summary>
+        public void DisplayCurrentGameStats()
+        {
+            ConsoleUtil.HeaderText = "Connect 4: The Game | Current Game Stats";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("The below stats are the stats for the current game of Connect 4: The Game");
+
+            Console.WriteLine();
+
+            //TODO: Display current game stats here
+
+            Console.WriteLine();
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
+        /// displays previous game stats
+        /// </summary>
+        public void DisplayPreviousGameStats()
+        {
+            ConsoleUtil.HeaderText = "Connect 4: The Game | Previous Game Stats";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("The below stats are the stats for the previous game of Connect 4: The Game");
+
+            Console.WriteLine();
+
+            //TODO: Display previous game stats here
+
+            Console.WriteLine();
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
+        /// displays current game stats
+        /// </summary>
+        public void DisplaySaveGameScreen()
+        {
+            ConsoleUtil.HeaderText = "Connect 4: The Game | Save Game";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("We are saving your game.  Please do not turn off Connect 4: The Game");
+
+            Console.WriteLine();
+
+            //TODO: Save game for user
+
+            Console.WriteLine();
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
         /// display a closing screen when the user quits the application
         /// </summary>
         public void DisplayClosingScreen()
         {
-            ConsoleUtil.HeaderText = "The Tic-tac-toe Game";
+            ConsoleUtil.HeaderText = "Connect 4: The Game | Quit Game";
             ConsoleUtil.DisplayReset();
 
-            ConsoleUtil.DisplayMessage("Thank you for using The Tic-tac-toe Game.");
+            ConsoleUtil.DisplayMessage("Thank you for playing Connect 4!.");
 
             DisplayContinuePrompt();
         }

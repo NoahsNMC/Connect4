@@ -47,6 +47,7 @@
     <Compile Include="Controller\Controller.cs" />
     <Compile Include="Model\Gameboard.cs" />
     <Compile Include="Model\GameboardPosition.cs" />
+    <Compile Include="Model\MainMenu.cs" />
     <Compile Include="Model\MenuOption.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
