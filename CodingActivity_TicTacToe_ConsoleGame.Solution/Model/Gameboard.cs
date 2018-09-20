@@ -146,7 +146,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             }
         }
 
-        public bool IsCatsGame()
+        public bool IsCatsGame() // [DELETE LATER]
         {
             //
             // All positions on board are filled and no winner
@@ -165,7 +165,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
-        /// Check for any three in a row.
+        /// Check for any three in a row. [DELETE LATER]
         /// </summary>
         /// <param name="playerPieceToCheck">Player's game piece to check</param>
         /// <returns>true if a player has won</returns>

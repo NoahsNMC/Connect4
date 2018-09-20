@@ -25,6 +25,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         private static string _headerText = "- set header text -";
 
+        private static string _subHeaderText = "";
+
         private static ConsoleColor _headerBackgroundColor = ConsoleColor.White;
         private static ConsoleColor _headerForegroundColor = ConsoleColor.Red;
 
@@ -68,7 +70,13 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             get { return _headerText; }
             set { _headerText = value; }
         }
-        
+
+        public static string SubHeaderText
+        {
+            get { return _subHeaderText; }
+            set { _subHeaderText = value; }
+        }
+
         public static ConsoleColor HeaderBackgroundColor
         {
             get { return _headerBackgroundColor = ConsoleColor.White; }
@@ -123,7 +131,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
             Console.WriteLine(ConsoleUtil.FillStringWithSpaces(_windowWidth));
             Console.WriteLine(ConsoleUtil.Center(_headerText));
-            Console.WriteLine(ConsoleUtil.FillStringWithSpaces(_windowWidth));
+            if(_subHeaderText != "")
+                Console.WriteLine(ConsoleUtil.Center(_subHeaderText));
+            else
+                Console.WriteLine(ConsoleUtil.FillStringWithSpaces(_windowWidth));
 
             Console.ForegroundColor = _bodyForegroundColor;
             Console.BackgroundColor = _bodyBackgroundColor;

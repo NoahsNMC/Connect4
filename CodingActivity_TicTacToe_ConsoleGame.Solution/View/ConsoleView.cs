@@ -24,7 +24,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         #region FIELDS
 
-        private const int GAMEBOARD_VERTICAL_LOCATION = 4;
+        private const int GAMEBOARD_VERTICAL_LOCATION = 5;
 
         private int POSITIONPROMPT_VERTICAL_LOCATION = 12;
         private int POSITIONPROMPT_HORIZONTAL_LOCATION = 3;
@@ -87,7 +87,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             Console.BackgroundColor = ConsoleConfig.bodyBackgroundColor;
             Console.ForegroundColor = ConsoleConfig.bodyBackgroundColor;
 
-            ConsoleUtil.WindowTitle = "The Tic-tac-toe Game";
+            ConsoleUtil.WindowTitle = "Connect 4 The Movie: The Game!";
         }
 
         /// <summary>
@@ -176,6 +176,40 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
+        /// Informs the player that there game was loaded.
+        /// </summary>
+        public void DisplayGameLoadedScreen()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            ConsoleUtil.HeaderText = "Game Load";
+            ConsoleUtil.DisplayReset();
+
+            sb.Append(" Your saved game was loaded!");
+
+            DisplayMessageBox(sb.ToString());
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
+        /// Informs the player that there game was saved.
+        /// </summary>
+        public void DisplayGameSavedScreen()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            ConsoleUtil.HeaderText = "Game Save";
+            ConsoleUtil.DisplayReset();
+
+            sb.Append(" Your game was saved!");
+
+            DisplayMessageBox(sb.ToString());
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
         /// display the welcome screen
         /// </summary>
         public void DisplayWelcomeScreen()
@@ -220,7 +254,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         public void DisplayGameArea()
         {
             ConsoleUtil.HeaderText = "Current Game Board";
+            ConsoleUtil.SubHeaderText = "[F1: SAVE] [F2: LOAD]";
             ConsoleUtil.DisplayReset();
+            ConsoleUtil.SubHeaderText = "";
 
             DisplayGameboard();
             DisplayGameStatus();
@@ -486,9 +522,13 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                             player_column++;
                         break;
                     case ConsoleKey.F1:
-                        break;
+                        JsonServices.WriteJsonFile(_gameboard); //debug
+                        DisplayGameSavedScreen();
+                        return -1;
                     case ConsoleKey.F2:
-                        break;
+                        _gameboard._board = JsonServices.ReadJsonFile()._board; //debug
+                        DisplayGameLoadedScreen();
+                        return -1;
                     case ConsoleKey.F3:
                         break;
                     case ConsoleKey.F4:

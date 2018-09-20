@@ -202,7 +202,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         {
             int gameboardColumn = _gameView.GetPlayerPositionChoice();
 
-            if (_gameView.CurrentViewState != ConsoleView.ViewState.PlayerUsedMaxAttempts)
+            if (_gameView.CurrentViewState != ConsoleView.ViewState.PlayerUsedMaxAttempts && gameboardColumn > -1)
             {
                 //
                 // player chose an open position on the game board, add it to the game board
