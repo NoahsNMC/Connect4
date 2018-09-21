@@ -24,7 +24,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         #region FIELDS
 
-        private const int GAMEBOARD_VERTICAL_LOCATION = 4;
+        private const int GAMEBOARD_VERTICAL_LOCATION = 5;
 
         private int POSITIONPROMPT_VERTICAL_LOCATION = 12;
         private int POSITIONPROMPT_HORIZONTAL_LOCATION = 3;
@@ -40,6 +40,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         private ViewState _currentViewStat;
 
         private static readonly string[] PLAYER_ICONS = { "", "\u2588\u2588", "\u2592\u2592" };
+
+        private static readonly string[] MAIN_MENU = { "Play Game", "Game Rules", "Current Game Stats", "Previous Game Stats", "Save Game", "Quit Game" };
+
+        private static string GAME_NAME = "Connect 4 The Movie: The Game";
 
         #endregion
 
@@ -87,7 +91,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             Console.BackgroundColor = ConsoleConfig.bodyBackgroundColor;
             Console.ForegroundColor = ConsoleConfig.bodyBackgroundColor;
 
-            ConsoleUtil.WindowTitle = "The Tic-tac-toe Game";
+            ConsoleUtil.WindowTitle = GAME_NAME+"!";
         }
 
         /// <summary>
@@ -117,7 +121,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             Console.CursorVisible = false;
 
             Console.WriteLine();
-            ConsoleUtil.DisplayMessage("Thank you for play the game. Press any key to Exit.");
+            ConsoleUtil.DisplayMessage("Thank you for playing "+ GAME_NAME + ". Press any key to Exit.");
 
             Console.ReadKey();
 
@@ -176,13 +180,47 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
+        /// Informs the player that there game was loaded.
+        /// </summary>
+        public void DisplayGameLoadedScreen()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            ConsoleUtil.HeaderText = "Game Load";
+            ConsoleUtil.DisplayReset();
+
+            sb.Append(" Your saved game was loaded!");
+
+            DisplayMessageBox(sb.ToString());
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
+        /// Informs the player that there game was saved.
+        /// </summary>
+        public void DisplayGameSavedScreen()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            ConsoleUtil.HeaderText = "Game Save";
+            ConsoleUtil.DisplayReset();
+
+            sb.Append(" Your game was saved!");
+
+            DisplayMessageBox(sb.ToString());
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
         /// display the welcome screen
         /// </summary>
         public void DisplayWelcomeScreen()
         {
             StringBuilder sb = new StringBuilder();
 
-            ConsoleUtil.HeaderText = "Connect 4: The Movie The Game!";
+            ConsoleUtil.HeaderText = GAME_NAME+"!";
             ConsoleUtil.DisplayReset();
 
             ConsoleUtil.DisplayMessage("Programmed by Noah Osterhout, Jason Luckhardt, and Chris Coznowski.");
@@ -190,7 +228,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             Console.WriteLine();
 
             sb.Clear();
-            sb.AppendFormat("Welcome to Connect 4: The Game! This is Connect 4 but in the console ");
+            sb.AppendFormat("Welcome to "+ GAME_NAME + "! This is Connect 4 but in the console ");
             sb.AppendFormat("for Windows. The standard rules for Connect 4 apply, and this is just a two player ");
             sb.AppendFormat("game with each player taking a turn. Good luck and have fun, but remeber, if you find a bug ");
             sb.AppendFormat("it's most likely a feature! ");
@@ -210,77 +248,45 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         public int DisplayMainMenuScreen()
         {
             bool validResponse = false;
-            int usersChoice = 0;
+            int usersChoice = 0, i = 0;
 
             while (!validResponse)
             {
 
                 StringBuilder sb = new StringBuilder();
 
-                ConsoleUtil.HeaderText = "Connect 4: The Game | Main Menu";
+                ConsoleUtil.HeaderText = GAME_NAME + " | Main Menu";
                 ConsoleUtil.DisplayReset();
 
                 ConsoleUtil.DisplayMessage("Welcome to the Main Menu!");
                 ConsoleUtil.DisplayMessage("Please choose a menu option to continue");
 
                 Console.WriteLine();
-
-                ConsoleUtil.DisplayMessage("(1) Play Game \n ");
-                ConsoleUtil.DisplayMessage("(2) Gane Rules \n ");
-                ConsoleUtil.DisplayMessage("(3) Current Game Stats \n ");
-                ConsoleUtil.DisplayMessage("(4) Previous Game Stats \n ");
-                ConsoleUtil.DisplayMessage("(5) Save Game \n ");
-                ConsoleUtil.DisplayMessage("(6) Quit Game \n ");
-
+                foreach (string option in MAIN_MENU)
+                    ConsoleUtil.DisplayMessage("("+(++i)+") "+option+" \n ");
                 Console.WriteLine();
 
-                ConsoleUtil.DisplayMessage("Please enter the menu option \n ");
+
+                Console.Write("Please enter the menu option: ".PadLeft(33));
 
 
                 string userResponse = Console.ReadLine();
                 var isNumeric = int.TryParse(userResponse, out usersChoice);
+                usersChoice--;
 
-
-                Console.WriteLine("DEBUG:" + usersChoice);
                 Console.WriteLine();
-                Console.ReadKey();
-
-                switch (usersChoice)
+                if (usersChoice > -1 && usersChoice < MAIN_MENU.Length)
                 {
-                    case 0:
-                        ConsoleUtil.DisplayMessage("It looks like you entered a wrong menu choice, please try again");
-                        validResponse = false;
-                        break;
-                    case 1:
-                        ConsoleUtil.DisplayMessage("You selected to play a new game ");
-                        validResponse = true;
-                        break;
-                    case 2:
-                        ConsoleUtil.DisplayMessage("You selected to view game rules ");
-                        validResponse = true;
-                        break;
-                    case 3:
-                        ConsoleUtil.DisplayMessage("You selected to view current game stats ");
-                        validResponse = true;
-                        break;
-                    case 4:
-                        ConsoleUtil.DisplayMessage("You selected to view previous game stats ");
-                        validResponse = true;
-                        break;
-                    case 5:
-                        ConsoleUtil.DisplayMessage("You selected to save the game ");
-                        validResponse = true;
-                        break;
-                    case 6:
-                        ConsoleUtil.DisplayMessage("You selected to quit the game ");
-                        validResponse = true;
-                        break;
-
-                    default:
-                        break;
+                    ConsoleUtil.DisplayMessage("You selected "+MAIN_MENU[usersChoice]+". ");
+                    validResponse = true;
                 }
-
-
+                else
+                {
+                    ConsoleUtil.DisplayMessage("It looks like you entered a wrong menu choice, please try again");
+                    validResponse = false;
+                }
+                Console.ReadKey();
+                i = 0;
             }
 
             return usersChoice;
@@ -288,14 +294,92 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
+        /// displays game rules
+        /// </summary>
+        public void DisplayGameRules()
+        {
+            ConsoleUtil.HeaderText = GAME_NAME + " | Rules";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("The below are the following rules of "+ GAME_NAME + ".");
+
+            Console.WriteLine();
+
+            ConsoleUtil.DisplayMessage("(1) Two players are required to play "+ GAME_NAME + " \n ");
+            ConsoleUtil.DisplayMessage("(2) Each player will take their turns dropping their game piece in the selected column \n ");
+            ConsoleUtil.DisplayMessage("(3) The first player to get 4 game pieces in a row, either vertical or horizontal, wins the game \n ");
+
+            Console.WriteLine();
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
+        /// displays current game stats
+        /// </summary>
+        public void DisplayCurrentGameStats()
+        {
+            ConsoleUtil.HeaderText = GAME_NAME + " | Current Game Stats";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("The below stats are the stats for the current game of " + GAME_NAME + ".");
+
+            Console.WriteLine();
+
+            //TODO: Display current game stats here
+
+            Console.WriteLine();
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
+        /// displays previous game stats
+        /// </summary>
+        public void DisplayPreviousGameStats()
+        {
+            ConsoleUtil.HeaderText = GAME_NAME + " | Previous Game Stats";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("The below stats are the stats for the previous game of "+ GAME_NAME + ".");
+
+            Console.WriteLine();
+
+            //TODO: Display previous game stats here
+
+            Console.WriteLine();
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
+        /// displays current game stats
+        /// </summary>
+        public void DisplaySaveGameScreen()
+        {
+            ConsoleUtil.HeaderText = GAME_NAME + " | Save Game";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("We are saving your game.  Please do not turn off "+ GAME_NAME + ".");
+
+            Console.WriteLine();
+
+            //TODO: Save game for user
+
+            Console.WriteLine();
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
         /// display a closing screen when the user quits the application
         /// </summary>
         public void DisplayClosingScreen()
         {
-            ConsoleUtil.HeaderText = "The Tic-tac-toe Game";
+            ConsoleUtil.HeaderText = GAME_NAME + " | Quit Game";
             ConsoleUtil.DisplayReset();
 
-            ConsoleUtil.DisplayMessage("Thank you for using The Tic-tac-toe Game.");
+            ConsoleUtil.DisplayMessage("Thank you for playing "+ GAME_NAME + "!.");
 
             DisplayContinuePrompt();
         }
@@ -303,7 +387,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         public void DisplayGameArea()
         {
             ConsoleUtil.HeaderText = "Current Game Board";
+            ConsoleUtil.SubHeaderText = "[F1: SAVE] [F2: LOAD]";
             ConsoleUtil.DisplayReset();
+            ConsoleUtil.SubHeaderText = "";
 
             DisplayGameboard();
             DisplayGameStatus();
@@ -569,9 +655,13 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                             player_column++;
                         break;
                     case ConsoleKey.F1:
-                        break;
+                        JsonServices.WriteJsonFile(_gameboard); //debug
+                        DisplayGameSavedScreen();
+                        return -1;
                     case ConsoleKey.F2:
-                        break;
+                        _gameboard._board = JsonServices.ReadJsonFile()._board; //debug
+                        DisplayGameLoadedScreen();
+                        return -1;
                     case ConsoleKey.F3:
                         break;
                     case ConsoleKey.F4:

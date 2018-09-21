@@ -110,9 +110,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             // Note: gameboardPosition converted to array index by subtracting 1
             //
 
-            for (int row = MaxNumOfRowsColumns - 1; row >= 0; row--)
+            for (int row = MaxNumOfRowsColumns-1; row >= 0; row--)
             {
-                if (_board[row, gameboardColumn].Status == PlayerPiece.None)
+                if(_board[row, gameboardColumn].Status == PlayerPiece.None)
                 {
                     return row;
                 }
@@ -130,23 +130,23 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             {
                 _currentRoundState = GameboardState.PlayerXWin;
             }
-
-            //A player O has won
-            
+            //
+            // A player O has won
+            //
             else if (ThreeInARow(PlayerPiece.O))
             {
                 _currentRoundState = GameboardState.PlayerOWin;
             }
-
-            //All positions filled
-            
+            //
+            // All positions filled
+            //
             else if (IsCatsGame())
             {
                 _currentRoundState = GameboardState.CatsGame;
             }
         }
 
-        public bool IsCatsGame()
+        public bool IsCatsGame() // [DELETE LATER]
         {
             //
             // All positions on board are filled and no winner
@@ -165,24 +165,15 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
-        /// Check for any four in a row.
+        /// Check for any three in a row. [DELETE LATER]
         /// </summary>
         /// <param name="playerPieceToCheck">Player's game piece to check</param>
         /// <returns>true if a player has won</returns>
-        /// 
-
-        //private bool FourInARow(PlayerPiece playerPieceToCheck)
-        //{
-
-        //}
-
-
         private bool ThreeInARow(PlayerPiece playerPieceToCheck)
         {
             //
             // Check rows for player win
             //
-
             for (int row = 0; row < 3; row++)
             {
                 if (_positionState[row, 0] == playerPieceToCheck &&

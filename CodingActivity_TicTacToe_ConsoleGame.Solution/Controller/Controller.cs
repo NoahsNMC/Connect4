@@ -14,6 +14,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         //
         private bool _playingGame;
         private bool _playingRound;
+        private bool _sendBack = false;
 
         private int _roundNumber;
 
@@ -48,19 +49,46 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
             _gameView.DisplayWelcomeScreen();
 
-            _usersChoice =  _gameView.DisplayMainMenuScreen();
 
-            switch (_usersChoice)
+            while (!_sendBack)
             {
-                case 1:
-                    PlayGame();
-                    break;
+                _usersChoice = _gameView.DisplayMainMenuScreen();
 
-                default:
-                    break;
+                switch (_usersChoice)
+                {
+                    case 0:
+                        PlayGame();
+                        break;
+
+                    case 1:
+                        _gameView.DisplayGameRules();
+                        _sendBack = false;
+                        break;
+
+                    case 2:
+                        _gameView.DisplayCurrentGameStats();
+                        _sendBack = false;
+                        break;
+
+                    case 3:
+                        _gameView.DisplayPreviousGameStats();
+                        _sendBack = false;
+                        break;
+
+                    case 4:
+                        _gameView.DisplaySaveGameScreen();
+                        _sendBack = false;
+                        break;
+
+                    case 5:
+                        _gameView.DisplayClosingScreen();
+                        _sendBack = true;
+                        break;
+
+                    default:
+                        break;
+                }
             }
-
-
 
         }
 
@@ -217,7 +245,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         {
             int gameboardColumn = _gameView.GetPlayerPositionChoice();
 
-            if (_gameView.CurrentViewState != ConsoleView.ViewState.PlayerUsedMaxAttempts)
+            if (_gameView.CurrentViewState != ConsoleView.ViewState.PlayerUsedMaxAttempts && gameboardColumn > -1)
             {
                 //
                 // player chose an open position on the game board, add it to the game board
