@@ -56,31 +56,31 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
                 switch (_usersChoice)
                 {
-                    case 1:
+                    case 0:
                         PlayGame();
                         break;
 
-                    case 2:
+                    case 1:
                         _gameView.DisplayGameRules();
                         _sendBack = false;
                         break;
 
-                    case 3:
+                    case 2:
                         _gameView.DisplayCurrentGameStats();
                         _sendBack = false;
                         break;
 
-                    case 4:
+                    case 3:
                         _gameView.DisplayPreviousGameStats();
                         _sendBack = false;
                         break;
 
-                    case 5:
+                    case 4:
                         _gameView.DisplaySaveGameScreen();
                         _sendBack = false;
                         break;
 
-                    case 6:
+                    case 5:
                         _gameView.DisplayClosingScreen();
                         _sendBack = true;
                         break;
