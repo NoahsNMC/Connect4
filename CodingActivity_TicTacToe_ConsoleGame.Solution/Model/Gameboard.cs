@@ -164,11 +164,84 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             return true;
         }
 
+
         /// <summary>
-        /// Check for any three in a row. [DELETE LATER]
+        /// Chech for Win
         /// </summary>
-        /// <param name="playerPieceToCheck">Player's game piece to check</param>
-        /// <returns>true if a player has won</returns>
+        /// <param name="playerCheck"></param>
+        /// <returns></returns>
+        //private bool FourInARow (int playerCheck)
+        // {
+        //     // vertical win check
+
+        //     for (int row = 0; row < MaxNumOfRowsColumns - 3; row++)
+        //     {
+        //         for (int col = 0; col < MaxNumOfRowsColumns; col++)
+        //         {
+        //             if (this.NumbersEqual(playerCheck, this._positionState[row, col], this._board[row + 1, col], this._board[row + 2, col], this._board[row + 3, col]))
+        //             {
+        //                 return playerCheck;
+        //             }
+        //         }
+        //     }
+
+        //     //Horizontal win check
+
+        //     for (int row = 0; row < this.MaxNumOfRowsColumns; row++)
+        //     {
+        //         for (int col = 0; col < this.MaxNumOfRowsColumns - 3; col++)
+        //         {
+        //             if (this.NumbersEqual(playerCheck, this._board[row, col], this._board[row, col + 1], this._board[row, col + 2], this._board[row, col + 3]))
+        //             {
+        //                 return playerCheck;
+        //             }
+        //         }
+        //     }
+
+        //     // Diagonal win check ( \ )
+        //     for (int row = 0; row < this.MaxNumOfRowsColumns - 3; row++)
+        //     {
+        //         for (int col = 0; col < this.MaxNumOfRowsColumns - 3; col++)
+        //         {
+        //             if (this.NumbersEqual(playerCheck, this._board[row, col], this._board[row + 1, col + 1], this._board[row + 2, col + 2], this._board[row + 3, col + 3]))
+        //             {
+        //                 return playerCheck;
+        //             }
+        //         }
+        //     }
+
+        //     // Diagonal win check ( / )
+        //     for (int row = 0; row < this.MaxNumOfRowsColumns - 3; row++)
+        //     {
+        //         for (int col = 3; col < this.MaxNumOfRowsColumns; col++)
+        //         {
+        //             if (this.NumbersEqual(playerCheck, this._board[row, col], this._board[row + 1, col - 1], this._board[row + 2, col - 2], this._board[row + 3, col - 3]))
+        //             {
+        //                 return playerCheck;
+        //             }
+        //         }
+        //     }
+
+        //     return false;
+        // }
+
+
+        // private bool NumbersEqual(int toCheck, params int[] numbers)
+        // {
+        //     foreach (int num in numbers)
+        //     {
+        //         if (num != toCheck)
+        //         {
+        //             return false;
+        //         }
+        //     }
+        // }
+
+        ///// <summary>
+        ///// Check for any three in a row. [DELETE LATER]
+        ///// </summary>
+        ///// <param name="playerPieceToCheck">Player's game piece to check</param>
+        ///// <returns>true if a player has won</returns>
         private bool ThreeInARow(PlayerPiece playerPieceToCheck)
         {
             //

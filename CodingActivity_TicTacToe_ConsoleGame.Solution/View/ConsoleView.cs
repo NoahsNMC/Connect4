@@ -128,6 +128,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             System.Environment.Exit(1);
         }
 
+
         /// <summary>
         /// display the session timed out screen
         /// </summary>
@@ -319,6 +320,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// </summary>
         public void DisplayCurrentGameStats()
         {
+            ConsoleUtil.DisplayReset();
             ConsoleUtil.HeaderText = GAME_NAME + " | Current Game Stats";
             ConsoleUtil.DisplayReset();
 
@@ -327,6 +329,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             Console.WriteLine();
 
             //TODO: Display current game stats here
+
 
             Console.WriteLine();
 
@@ -387,7 +390,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         public void DisplayGameArea()
         {
             ConsoleUtil.HeaderText = "Current Game Board";
-            ConsoleUtil.SubHeaderText = "[F1: SAVE] [F2: LOAD]";
+            ConsoleUtil.SubHeaderText = "[F1: SAVE] [F2: LOAD] [ECS: EXIT ROUND]";
             ConsoleUtil.DisplayReset();
             ConsoleUtil.SubHeaderText = "";
 
@@ -665,6 +668,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     case ConsoleKey.F3:
                         break;
                     case ConsoleKey.F4:
+                        break;
+                    case ConsoleKey.Escape:
+                        DisplayCurrentGameStats();
                         break;
                     default:
                         break;
