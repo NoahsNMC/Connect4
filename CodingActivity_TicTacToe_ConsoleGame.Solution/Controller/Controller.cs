@@ -57,6 +57,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 switch (_usersChoice)
                 {
                     case 0:
+                        _gameView.DisplayWhosOnFirst();
                         PlayGame();
                         break;
 

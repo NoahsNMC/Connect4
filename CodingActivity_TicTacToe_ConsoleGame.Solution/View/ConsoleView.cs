@@ -294,6 +294,62 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
+        /// displays who goes first
+        /// </summary>
+        public  (string playerOne, string playerTwo)  DisplayWhosOnFirst(string readyPlayerOne, string readyPlayerTwo)
+        {
+
+            // Using a tuple because I just learned it and too lazy to do the extra method to get player 2 name
+
+            bool validInput = false;
+
+            ConsoleUtil.HeaderText = GAME_NAME + " | Round Setup";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("This screen will allow you to choose which user goes first or let the computer decide");
+
+            Console.WriteLine();
+
+            Console.Write("Please enter player one's name (Name has to be A-z!): ".PadLeft(33));
+            readyPlayerOne = Console.ReadLine();
+
+
+            while (!validInput)
+            {
+                if (Regex.IsMatch(readyPlayerOne, @"^[a-zA-Z]+$")  == true)
+                {
+                    validInput = true;
+                } else
+                {
+                    Console.Write("Please enter player one's name (Name has to be A-z!): ".PadLeft(33));
+                    readyPlayerOne = Console.ReadLine();
+                }
+            }
+
+            validInput = false;
+
+            Console.Write("Please enter player two's name (Name has to be A-z!): ".PadLeft(33));
+            readyPlayerTwo = Console.ReadLine();
+
+            while (!validInput)
+            {
+                if (Regex.IsMatch(readyPlayerTwo, @"^[a-zA-Z]+$") == true)
+                {
+                    validInput = true;
+                }
+                else
+                {
+                    Console.Write("Please enter player two's name (Name has to be A-z!): ".PadLeft(33));
+                    readyPlayerTwo = Console.ReadLine();
+                }
+            }
+
+            DisplayContinuePrompt();
+
+            return (readyPlayerOne, readyPlayerTwo);
+        }
+
+        /// <summary>
         /// displays game rules
         /// </summary>
         public void DisplayGameRules()
@@ -422,6 +478,12 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         public void DisplayGameStatus()
         {
+
+            Tuple<string, string> players = new Tuple<string playerOne, string playerTwo>;
+
+            playerOne = DisplayWhosOnFirst();
+
+
             StringBuilder sb = new StringBuilder();
 
             switch (_gameboard.CurrentRoundState)
@@ -432,20 +494,20 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     //
                     break;
                 case Gameboard.GameboardState.PlayerXTurn:
-                    DisplayMessageBox("It is currently Player X's turn.");
+                    DisplayMessageBox("It is currently Player "+ playerOne +"'s turn.");
                     break;
                 case Gameboard.GameboardState.PlayerOTurn:
-                    DisplayMessageBox("It is currently Player O's turn.");
+                    DisplayMessageBox("It is currently Player "+ playerTwo +"'s turn.");
                     break;
                 case Gameboard.GameboardState.PlayerXWin:
-                    DisplayMessageBox("Player X Wins! Press any key to continue.");
+                    DisplayMessageBox("Player "+ playerOne +" Wins! Press any key to continue.");
 
                     Console.CursorVisible = false;
                     Console.ReadKey();
                     Console.CursorVisible = true;
                     break;
                 case Gameboard.GameboardState.PlayerOWin:
-                    DisplayMessageBox("Player O Wins! Press any key to continue.");
+                    DisplayMessageBox("Player "+ playerTwo +" Wins! Press any key to continue.");
 
                     Console.CursorVisible = false;
                     Console.ReadKey();
