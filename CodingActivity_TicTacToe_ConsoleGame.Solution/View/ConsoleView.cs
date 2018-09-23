@@ -412,7 +412,19 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             ConsoleUtil.DisplayMessage("Rounds for Player O: " + playerOWins + " - " + String.Format("{0:P2}", playerOPercentageWins));
             ConsoleUtil.DisplayMessage("Cat's Games: " + catsGames + " - " + String.Format("{0:P2}", percentageOfCatsGames));
 
-            DisplayContinuePrompt();
+            //DisplayContinuePrompt();  // DELETE
+
+            DisplayContinueToMainMenuPrompt();
+
+        }
+
+        public void DisplayContinueToMainMenuPrompt()
+        {
+            ConsoleUtil.DisplayMessage("Press anykey to be brought back to the Main Menu");
+
+            Console.ReadKey();
+
+            DisplayMainMenuScreen();
         }
 
         public bool DisplayNewRoundPrompt()

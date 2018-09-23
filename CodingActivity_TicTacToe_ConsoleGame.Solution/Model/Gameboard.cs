@@ -151,9 +151,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             //
             // All positions on board are filled and no winner
             //
-            for (int row = 0; row < 3; row++)
+            for (int row = 0; row < 6; row++)
             {
-                for (int column = 0; column < 3; column++)
+                for (int column = 0; column < 7; column++)
                 {
                     if (_positionState[row, column] == PlayerPiece.None)
                     {

@@ -13,7 +13,10 @@
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
     <NestedTypes>
-      <Enum Name="TicTacToe.ConsoleApp.Gameboard.PlayerPiece">
+      <Enum Name="TicTacToe.ConsoleApp.Gameboard.
+            
+
+">
         <TypeIdentifier>
           <NewMemberFileName>Model\Gameboard.cs</NewMemberFileName>
         </TypeIdentifier>
