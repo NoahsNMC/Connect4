@@ -33,6 +33,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         private static Gameboard _gameboard = new Gameboard();
         private static ConsoleView _gameView = new ConsoleView(_gameboard);
 
+
         #endregion
 
         #region PROPERTIES
@@ -230,6 +231,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     _playingRound = false;
                     _playingGame = false;
                     break;
+
                 default:
                     break;
             }
@@ -277,7 +279,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             }
             Console.ReadKey();
         }
-
         #endregion
     }
+
 }
