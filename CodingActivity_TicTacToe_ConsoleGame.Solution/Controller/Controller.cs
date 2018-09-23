@@ -192,7 +192,15 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     {
                         case Gameboard.GameboardState.NewRound:
                             _roundNumber++;
-                            _gameboard.CurrentRoundState = Gameboard.GameboardState.PlayerXTurn;
+
+                            if (_gameView.DisplayWhosOnFirst() == 0)
+                            {
+                                _gameboard.CurrentRoundState = Gameboard.GameboardState.PlayerXTurn;
+                            } else
+                            {
+                                _gameboard.CurrentRoundState = Gameboard.GameboardState.PlayerOTurn;
+                            }
+
                             break;
 
                         case Gameboard.GameboardState.PlayerXTurn:

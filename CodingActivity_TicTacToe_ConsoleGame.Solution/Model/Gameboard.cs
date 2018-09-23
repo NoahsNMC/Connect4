@@ -43,6 +43,13 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         public GameboardPosition[,] _board = new GameboardPosition[MAX_NUM_OF_ROWS_COLUMNS, MAX_NUM_OF_ROWS_COLUMNS];
 
+        //
+        // instantiate  a Gameboard object
+        // instantiate a GameView object and give it access to the Gameboard object
+        //
+        private static Gameboard _gameboard = new Gameboard();
+        private static ConsoleView _gameView = new ConsoleView(_gameboard);
+
         #endregion
 
         #region PROPERTIES

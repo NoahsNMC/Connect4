@@ -295,7 +295,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
-        /// displays who goes first
+        /// displays who goes first and returns a 0 or 1 for X and O
         /// </summary>
         public  int  DisplayWhosOnFirst()
         {
@@ -306,15 +306,16 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
             Random random = new Random();
 
-
-
             StringBuilder sb = new StringBuilder();
 
             ConsoleUtil.HeaderText = GAME_NAME + " | Who Goes First";
             ConsoleUtil.DisplayReset();
 
             ConsoleUtil.DisplayMessage("Choose who will go first, X or O");
-            Console.WriteLine("Please enter either an X or an O for first player.  If you want the game to decide press any other key!");
+            Console.WriteLine();
+
+            ConsoleUtil.DisplayMessage("Please enter either an X or an O for first player.");
+            ConsoleUtil.DisplayMessage("If you want the game to decide press any other key!");
             userResponse = Console.ReadLine();
 
             while (!validChoice)
