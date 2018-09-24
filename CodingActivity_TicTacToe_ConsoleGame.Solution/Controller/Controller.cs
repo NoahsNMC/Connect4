@@ -60,6 +60,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 switch (_usersChoice)
                 {
                     case 0: //Play
+                        _gameView.DisplayWhosOnFirst();
                         PlayGame();
                         break;
 
@@ -194,7 +195,15 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     {
                         case Gameboard.GameboardState.NewRound:
                             _roundNumber++;
-                            _gameboard.CurrentRoundState = Gameboard.GameboardState.PlayerXTurn;
+
+                            if (_gameView.DisplayWhosOnFirst() == 0)
+                            {
+                                _gameboard.CurrentRoundState = Gameboard.GameboardState.PlayerXTurn;
+                            } else
+                            {
+                                _gameboard.CurrentRoundState = Gameboard.GameboardState.PlayerOTurn;
+                            }
+
                             break;
 
                         case Gameboard.GameboardState.PlayerXTurn:
@@ -233,6 +242,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     _playingRound = false;
                     _playingGame = false;
                     break;
+
                 default:
                     break;
             }
@@ -280,7 +290,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             }
             Console.ReadKey();
         }
-
         #endregion
     }
+
 }

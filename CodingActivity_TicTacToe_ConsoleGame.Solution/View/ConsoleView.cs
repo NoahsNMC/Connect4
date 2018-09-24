@@ -128,6 +128,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             System.Environment.Exit(1);
         }
 
+
         /// <summary>
         /// display the session timed out screen
         /// </summary>
@@ -294,6 +295,70 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
+        /// displays who goes first and returns a 0 or 1 for X and O
+        /// </summary>
+        public  int  DisplayWhosOnFirst()
+        {
+
+            bool validChoice = false;
+            string userResponse;
+            int readyPlayerOne = 0;
+
+            Random random = new Random();
+
+            StringBuilder sb = new StringBuilder();
+
+            ConsoleUtil.HeaderText = GAME_NAME + " | Who Goes First";
+            ConsoleUtil.DisplayReset();
+
+            ConsoleUtil.DisplayMessage("Choose who will go first, X or O");
+            Console.WriteLine();
+
+            ConsoleUtil.DisplayMessage("Please enter either an X or an O for first player.");
+            ConsoleUtil.DisplayMessage("If you want the game to decide press any other key!");
+            userResponse = Console.ReadLine();
+
+            while (!validChoice)
+            {
+                if (userResponse == "x" | userResponse =="X")
+                {
+                    readyPlayerOne = 0;
+                    validChoice = true;
+                }
+                else if (userResponse == "o" | userResponse =="O")
+                {
+                    readyPlayerOne = 1;
+                    validChoice = true;
+                }
+                else
+                {
+                    if (random.Next(0,2) == 0)
+                    {
+                        readyPlayerOne = 0;
+                        validChoice = true;
+                    }
+                    else
+                    {
+                        readyPlayerOne = 1;
+                        validChoice = true;
+                    }
+                }
+
+            }
+
+            if (readyPlayerOne == 0)
+            {
+                Console.WriteLine("First player is X");
+            } else
+            {
+                Console.WriteLine("First player is O");
+            }
+
+            DisplayContinuePrompt();
+            return readyPlayerOne;
+        }
+
+        /// <summary>
         /// displays game rules
         /// </summary>
         public void DisplayGameRules()
@@ -319,6 +384,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// </summary>
         public void DisplayCurrentGameStats()
         {
+            ConsoleUtil.DisplayReset();
             ConsoleUtil.HeaderText = GAME_NAME + " | Current Game Stats";
             ConsoleUtil.DisplayReset();
 
@@ -327,6 +393,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             Console.WriteLine();
 
             //TODO: Display current game stats here
+
 
             Console.WriteLine();
 
@@ -401,7 +468,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         public void DisplayGameArea()
         {
             ConsoleUtil.HeaderText = "Current Game Board";
-            ConsoleUtil.SubHeaderText = "[F1: SAVE] [F2: LOAD]";
+            ConsoleUtil.SubHeaderText = "[F1: SAVE] [F2: LOAD] [ECS: EXIT ROUND]";
             ConsoleUtil.DisplayReset();
             ConsoleUtil.SubHeaderText = "";
 
@@ -423,7 +490,19 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             ConsoleUtil.DisplayMessage("Rounds for Player O: " + playerOWins + " - " + String.Format("{0:P2}", playerOPercentageWins));
             ConsoleUtil.DisplayMessage("Cat's Games: " + catsGames + " - " + String.Format("{0:P2}", percentageOfCatsGames));
 
-            DisplayContinuePrompt();
+            //DisplayContinuePrompt();  // DELETE
+
+            DisplayContinueToMainMenuPrompt();
+
+        }
+
+        public void DisplayContinueToMainMenuPrompt()
+        {
+            ConsoleUtil.DisplayMessage("Press anykey to be brought back to the Main Menu");
+
+            Console.ReadKey();
+
+            DisplayMainMenuScreen();
         }
 
         public bool DisplayNewRoundPrompt()
@@ -436,6 +515,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         public void DisplayGameStatus()
         {
+
             StringBuilder sb = new StringBuilder();
 
             switch (_gameboard.CurrentRoundState)
@@ -452,7 +532,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     DisplayMessageBox("It is currently Player O's turn.");
                     break;
                 case Gameboard.GameboardState.PlayerXWin:
-                    DisplayMessageBox("Player X Wins! Press any key to continue.");
+                    DisplayMessageBox("Player  X  Wins! Press any key to continue.");
 
                     Console.CursorVisible = false;
                     Console.ReadKey();
@@ -680,6 +760,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     case ConsoleKey.F3:
                         break;
                     case ConsoleKey.F4:
+                        break;
+                    case ConsoleKey.Escape:
+                        DisplayCurrentGameStats();
                         break;
                     default:
                         break;
