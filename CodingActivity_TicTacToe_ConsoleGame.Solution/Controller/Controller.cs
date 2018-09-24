@@ -33,6 +33,9 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         private static Gameboard _gameboard = new Gameboard();
         private static ConsoleView _gameView = new ConsoleView(_gameboard);
 
+        private Scores _scores;
+        private HistoricScores _historicScores;
+
         #endregion
 
         #region PROPERTIES
@@ -56,31 +59,32 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
                 switch (_usersChoice)
                 {
-                    case 1:
+                    case 0: //Play
                         PlayGame();
                         break;
 
-                    case 2:
+                    case 1: //Rules
                         _gameView.DisplayGameRules();
                         _sendBack = false;
                         break;
 
-                    case 3:
+                    case 2: //Gamestats
                         _gameView.DisplayCurrentGameStats();
                         _sendBack = false;
                         break;
 
-                    case 4:
-                        _gameView.DisplayPreviousGameStats();
+                    case 3: //Historic Scores
+                        _historicScores = JsonServices.ReadJsonFile("scores.json") as HistoricScores;
+                        _gameView.DisplayPreviousGameStats(_historicScores.scoreboard);
                         _sendBack = false;
                         break;
 
-                    case 5:
+                    case 4: //Save
                         _gameView.DisplaySaveGameScreen();
                         _sendBack = false;
                         break;
 
-                    case 6:
+                    case 5: //Close
                         _gameView.DisplayClosingScreen();
                         _sendBack = true;
                         break;

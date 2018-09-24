@@ -41,7 +41,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         private static readonly string[] PLAYER_ICONS = { "", "\u2588\u2588", "\u2592\u2592" };
 
-        private static readonly string[] MAIN_MENU = { "Play Game", "Game Rules", "Current Game Stats", "Previous Game Stats", "Save Game", "Quit Game" };
+        private static readonly string[] MAIN_MENU = { "Play Game", "Game Rules", "Current Game Stats", "Historic Game Stats", "Save Game", "Quit Game" };
 
         private static string GAME_NAME = "Connect 4 The Movie: The Game";
 
@@ -336,15 +336,29 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <summary>
         /// displays previous game stats
         /// </summary>
-        public void DisplayPreviousGameStats()
+        public void DisplayPreviousGameStats(Scores.Scoreboard[] historicScores)
         {
+            string[] scoresArray = new string[historicScores.Length];
+            int i = 0;
             ConsoleUtil.HeaderText = GAME_NAME + " | Previous Game Stats";
             ConsoleUtil.DisplayReset();
 
-            ConsoleUtil.DisplayMessage("The below stats are the stats for the previous game of "+ GAME_NAME + ".");
+            ConsoleUtil.DisplayMessage("The below stats are the stats for the previous game of " + GAME_NAME + ".");
+
+            foreach (Scores.Scoreboard score in historicScores)
+            {
+                //scoresArray[i++]
+                string playerScore = score.gameTime.ToString().PadRight(20) + score.playerNames[0].PadRight(20) +
+                    score.playerScores[0].ToString().PadRight(10) +
+                    score.playerNames[1].PadRight(20) +
+                    score.playerScores[1].ToString().PadRight(10);
+                ConsoleUtil.Wrap(playerScore, 20, 20);
+            }
 
             Console.WriteLine();
 
+
+            //ConsoleUtil.Wrap();
             //TODO: Display previous game stats here
 
             Console.WriteLine();
@@ -659,7 +673,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                         DisplayGameSavedScreen();
                         return -1;
                     case ConsoleKey.F2:
-                        _gameboard._board = JsonServices.ReadJsonFile()._board; //debug
+                        Gameboard _tempboard = JsonServices.ReadJsonFile() as Gameboard;
+                        _gameboard._board = _tempboard._board; //debug
                         DisplayGameLoadedScreen();
                         return -1;
                     case ConsoleKey.F3:

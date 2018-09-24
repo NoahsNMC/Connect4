@@ -11,7 +11,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
     public class JsonServices
     {
         public const string dataFilePathJson = "Data\\";
-        public const string fileName = "game.json";
+        public const string defaultFileName = "game.json";
         string _dataFilePath;
 
         public JsonServices(string dataFilePath)
@@ -19,7 +19,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             _dataFilePath = dataFilePath;
         }
 
-        static public void WriteJsonFile(Gameboard _gameboard)
+        static public void WriteJsonFile(Gameboard _gameboard, string fileName = defaultFileName)
         {
             StreamWriter sWriter;
 
@@ -51,14 +51,23 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             }
         }
 
-        static public Gameboard ReadJsonFile()
+        static public object ReadJsonFile(string fileName = defaultFileName)
         {
-            Gameboard _gameboard = new Gameboard();
+            object _output;
 
-            using (StreamReader sReader = new StreamReader(dataFilePathJson+fileName))
-                _gameboard = JsonConvert.DeserializeObject<Gameboard>(sReader.ReadToEnd());
+            try
+            {
+                using (StreamReader sReader = new StreamReader(dataFilePathJson + fileName))
+                    _output = JsonConvert.DeserializeObject<Gameboard>(sReader.ReadToEnd());
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine("No scores found!");
+                Console.WriteLine(ex);
+                throw;
+            }
 
-            return _gameboard;
+            return _output;
         }
     }
 }
