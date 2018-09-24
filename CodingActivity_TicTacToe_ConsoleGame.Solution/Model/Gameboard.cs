@@ -152,8 +152,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     if(_board[peek_x, peek_y].Status == player)
                         connects += 1;
 
-                    Console.SetCursorPosition(_board[peek_x, peek_y].Row, _board[peek_x, peek_y].Column);
-                    Console.Write("SS");
+                    //Console.SetCursorPosition(_board[peek_x, peek_y].Row, _board[peek_x, peek_y].Column);
+                    //Console.Write("SS");
 
                     multi++;
                 } while (_board[peek_x, peek_y].Status == player);
