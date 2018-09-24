@@ -237,7 +237,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             Console.WriteLine();
 
             sb.Clear();
-            sb.AppendFormat("You will be redirecred to the main menu.");
+            sb.AppendFormat("You will be redirected to the main menu.");
             ConsoleUtil.DisplayMessage(sb.ToString());
 
             DisplayContinuePrompt();
@@ -270,6 +270,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
                 Console.Write("Please enter the menu option: ".PadLeft(33));
 
+                Console.CursorVisible = true;
 
                 string userResponse = Console.ReadLine();
                 var isNumeric = int.TryParse(userResponse, out usersChoice);
@@ -297,12 +298,12 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         /// <summary>
         /// displays who goes first and returns a 0 or 1 for X and O
         /// </summary>
-        public  int  DisplayWhosOnFirst()
+        public  Gameboard.GameboardState  DisplayWhosOnFirst()
         {
 
             bool validChoice = false;
             string userResponse;
-            int readyPlayerOne = 0;
+            Gameboard.GameboardState readyPlayerOne = 0;
 
             Random random = new Random();
 
@@ -322,31 +323,31 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             {
                 if (userResponse == "x" | userResponse =="X")
                 {
-                    readyPlayerOne = 0;
+                    readyPlayerOne = Gameboard.GameboardState.PlayerXTurn;
                     validChoice = true;
                 }
                 else if (userResponse == "o" | userResponse =="O")
                 {
-                    readyPlayerOne = 1;
+                    readyPlayerOne = Gameboard.GameboardState.PlayerOTurn;
                     validChoice = true;
                 }
                 else
                 {
                     if (random.Next(0,2) == 0)
                     {
-                        readyPlayerOne = 0;
+                        readyPlayerOne = Gameboard.GameboardState.PlayerXTurn;
                         validChoice = true;
                     }
                     else
                     {
-                        readyPlayerOne = 1;
+                        readyPlayerOne = Gameboard.GameboardState.PlayerOTurn;
                         validChoice = true;
                     }
                 }
 
             }
 
-            if (readyPlayerOne == 0)
+            if (readyPlayerOne == Gameboard.GameboardState.PlayerXTurn)
             {
                 Console.WriteLine("First player is X");
             } else
@@ -380,46 +381,26 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         }
 
         /// <summary>
-        /// displays current game stats
-        /// </summary>
-        public void DisplayCurrentGameStats()
-        {
-            ConsoleUtil.DisplayReset();
-            ConsoleUtil.HeaderText = GAME_NAME + " | Current Game Stats";
-            ConsoleUtil.DisplayReset();
-
-            ConsoleUtil.DisplayMessage("The below stats are the stats for the current game of " + GAME_NAME + ".");
-
-            Console.WriteLine();
-
-            //TODO: Display current game stats here
-
-
-            Console.WriteLine();
-
-            DisplayContinuePrompt();
-        }
-
-        /// <summary>
         /// displays previous game stats
         /// </summary>
-        public void DisplayPreviousGameStats(Scores.Scoreboard[] historicScores)
+        public void DisplayPreviousGameStats(List<Scoreboard> historicScores)
         {
-            string[] scoresArray = new string[historicScores.Length];
+            string[] scoresArray = new string[historicScores.Count];
             int i = 0;
             ConsoleUtil.HeaderText = GAME_NAME + " | Previous Game Stats";
             ConsoleUtil.DisplayReset();
 
             ConsoleUtil.DisplayMessage("The below stats are the stats for the previous game of " + GAME_NAME + ".");
+            ConsoleUtil.DisplayMessage("");
 
-            foreach (Scores.Scoreboard score in historicScores)
+            ConsoleUtil.DisplayMessage("Game Time".PadRight(23) + "Player 1".PadRight(15) + "Score".PadRight(10) + "Player 2".PadRight(15) + "Score".PadRight(10));
+            foreach (Scoreboard score in historicScores)
             {
-                //scoresArray[i++]
-                string playerScore = score.gameTime.ToString().PadRight(20) + score.playerNames[0].PadRight(20) +
+                ConsoleUtil.DisplayMessage(new String('=', ConsoleConfig.windowWidth - 2 * ConsoleConfig.displayHorizontalMargin));
+                ConsoleUtil.DisplayMessage(score.gameTime.ToString().PadRight(23) + score.playerNames[0].PadRight(15) +
                     score.playerScores[0].ToString().PadRight(10) +
-                    score.playerNames[1].PadRight(20) +
-                    score.playerScores[1].ToString().PadRight(10);
-                ConsoleUtil.Wrap(playerScore, 20, 20);
+                    score.playerNames[1].PadRight(15) +
+                    score.playerScores[1].ToString().PadRight(10));
             }
 
             Console.WriteLine();
@@ -427,6 +408,23 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
             //ConsoleUtil.Wrap();
             //TODO: Display previous game stats here
+
+            Console.WriteLine();
+
+            DisplayContinuePrompt();
+        }
+
+        /// <summary>
+        /// displays no game stats
+        /// </summary>
+        public void DisplayNoGameStats()
+        {
+            ConsoleUtil.HeaderText = GAME_NAME + " | Previous Game Stats";
+            ConsoleUtil.DisplayReset();
+
+            Console.WriteLine();
+
+            ConsoleUtil.DisplayMessage("Oops it looks like there aren't any scores yet!");
 
             Console.WriteLine();
 
@@ -502,7 +500,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
             Console.ReadKey();
 
-            DisplayMainMenuScreen();
+            //DisplayMainMenuScreen();
         }
 
         public bool DisplayNewRoundPrompt()
@@ -532,6 +530,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     DisplayMessageBox("It is currently Player O's turn.");
                     break;
                 case Gameboard.GameboardState.PlayerXWin:
+
                     DisplayMessageBox("Player  X  Wins! Press any key to continue.");
 
                     Console.CursorVisible = false;
@@ -762,8 +761,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     case ConsoleKey.F4:
                         break;
                     case ConsoleKey.Escape:
-                        DisplayCurrentGameStats();
-                        break;
+                        return -2;
                     default:
                         break;
                 }

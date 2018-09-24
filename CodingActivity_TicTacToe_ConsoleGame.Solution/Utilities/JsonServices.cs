@@ -19,7 +19,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             _dataFilePath = dataFilePath;
         }
 
-        static public void WriteJsonFile(Gameboard _gameboard, string fileName = defaultFileName)
+        static public void WriteJsonFile(object _object, string fileName = defaultFileName)
         {
             StreamWriter sWriter;
 
@@ -29,7 +29,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     Directory.CreateDirectory(dataFilePathJson);
 
                 using (sWriter = new StreamWriter(dataFilePathJson + fileName))
-                    sWriter.Write(JsonConvert.SerializeObject(_gameboard, Formatting.Indented));
+                    sWriter.Write(JsonConvert.SerializeObject(_object, Formatting.Indented));
             }
             catch (UnauthorizedAccessException ex)
             {
@@ -58,7 +58,10 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             try
             {
                 using (StreamReader sReader = new StreamReader(dataFilePathJson + fileName))
-                    _output = JsonConvert.DeserializeObject<Gameboard>(sReader.ReadToEnd());
+                    if(fileName == "game.json")
+                        _output = JsonConvert.DeserializeObject<Gameboard>(sReader.ReadToEnd());
+                    else
+                        _output = JsonConvert.DeserializeObject<List<Scoreboard>>(sReader.ReadToEnd());
             }
             catch (FileNotFoundException ex)
             {

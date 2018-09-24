@@ -39,7 +39,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         private PlayerPiece[,] _positionState;
 
-        private GameboardState _currentRoundState;
+        public GameboardState _currentRoundState;
 
         public GameboardPosition[,] _board = new GameboardPosition[MAX_NUM_OF_ROWS_COLUMNS, MAX_NUM_OF_ROWS_COLUMNS];
 
@@ -74,12 +74,6 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
         #region CONSTRUCTORS
 
-        public Gameboard()
-        {
-            _positionState = new PlayerPiece[MAX_NUM_OF_ROWS_COLUMNS, MAX_NUM_OF_ROWS_COLUMNS];
-
-            InitializeGameboard();
-        }
 
         #endregion
 
@@ -99,7 +93,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             {
                 for (int column = 0; column < MAX_NUM_OF_ROWS_COLUMNS; column++)
                 {
-                    _positionState[row, column] = PlayerPiece.None;
+                    _board[row, column].Status = PlayerPiece.NULL;
                 }
             }
         }
@@ -128,109 +122,52 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             return -1;
         }
 
-        /// <summary>
-        /// Update the game board state if a player wins or a cat's game happens.
-        /// </summary>
-        public void UpdateGameboardState()
-        {
-            if (ThreeInARow(PlayerPiece.X))
-            {
-                _currentRoundState = GameboardState.PlayerXWin;
-            }
-            //
-            // A player O has won
-            //
-            else if (ThreeInARow(PlayerPiece.O))
-            {
-                _currentRoundState = GameboardState.PlayerOWin;
-            }
-            //
-            // All positions filled
-            //
-            else if (IsCatsGame())
-            {
-                _currentRoundState = GameboardState.CatsGame;
-            }
-        }
-
-        public bool IsCatsGame() // [DELETE LATER]
-        {
-            //
-            // All positions on board are filled and no winner
-            //
-            for (int row = 0; row < 6; row++)
-            {
-                for (int column = 0; column < 7; column++)
-                {
-                    if (_positionState[row, column] == PlayerPiece.None)
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
 
         /// <summary>
-        /// Chech for Win
+        /// Check for Win
         /// </summary>
         /// <param name="playerCheck"></param>
         /// <returns></returns>
-        //private bool FourInARow (int playerCheck)
-        // {
-        //     // vertical win check
+        public bool WinCheckFourInARow( int x, int y, PlayerPiece player )
+        {
+            int[,] directions = { { -1, -1 }, { 0, -1 }, { 1, -1 },
+                                  { -1,  0 },            { 1,  0 },
+                                  { -1,  1 },  { 0, 1 }, { 1,  1 } };
+            int[] path = { 0, 7, 1, 6, 2, 5, 3, 4 };
+            int connects = 1;
+            int multi = 1;
+            int checks = 0;
+            int peek_x = 0;
+            int peek_y = 0;
 
-        //     for (int row = 0; row < MaxNumOfRowsColumns - 3; row++)
-        //     {
-        //         for (int col = 0; col < MaxNumOfRowsColumns; col++)
-        //         {
-        //             if (this.NumbersEqual(playerCheck, this._positionState[row, col], this._board[row + 1, col], this._board[row + 2, col], this._board[row + 3, col]))
-        //             {
-        //                 return playerCheck;
-        //             }
-        //         }
-        //     }
+            for (int i = 0; i < 8; i++)
+            {
+                checks += 1;
+                do
+                {
+                    peek_x = x + (directions[path[i], 1] * multi);
+                    peek_y = y + (directions[path[i], 0] * multi);
+                    if (peek_x > _board.GetUpperBound(0) || peek_y > _board.GetUpperBound(1) || peek_x < 0 || peek_y < 0)
+                        break;
+                    if(_board[peek_x, peek_y].Status == player)
+                        connects += 1;
 
-        //     //Horizontal win check
+                    Console.SetCursorPosition(_board[peek_x, peek_y].Row, _board[peek_x, peek_y].Column);
+                    Console.Write("SS");
 
-        //     for (int row = 0; row < this.MaxNumOfRowsColumns; row++)
-        //     {
-        //         for (int col = 0; col < this.MaxNumOfRowsColumns - 3; col++)
-        //         {
-        //             if (this.NumbersEqual(playerCheck, this._board[row, col], this._board[row, col + 1], this._board[row, col + 2], this._board[row, col + 3]))
-        //             {
-        //                 return playerCheck;
-        //             }
-        //         }
-        //     }
-
-        //     // Diagonal win check ( \ )
-        //     for (int row = 0; row < this.MaxNumOfRowsColumns - 3; row++)
-        //     {
-        //         for (int col = 0; col < this.MaxNumOfRowsColumns - 3; col++)
-        //         {
-        //             if (this.NumbersEqual(playerCheck, this._board[row, col], this._board[row + 1, col + 1], this._board[row + 2, col + 2], this._board[row + 3, col + 3]))
-        //             {
-        //                 return playerCheck;
-        //             }
-        //         }
-        //     }
-
-        //     // Diagonal win check ( / )
-        //     for (int row = 0; row < this.MaxNumOfRowsColumns - 3; row++)
-        //     {
-        //         for (int col = 3; col < this.MaxNumOfRowsColumns; col++)
-        //         {
-        //             if (this.NumbersEqual(playerCheck, this._board[row, col], this._board[row + 1, col - 1], this._board[row + 2, col - 2], this._board[row + 3, col - 3]))
-        //             {
-        //                 return playerCheck;
-        //             }
-        //         }
-        //     }
-
-        //     return false;
-        // }
+                    multi++;
+                } while (_board[peek_x, peek_y].Status == player);
+                if( connects >= 4 )
+                    return true;
+                if( checks == 2 )
+                {
+                    connects = 1;
+                    checks = 0;
+                }
+                multi = 1;
+            }
+            return false;
+        }
 
 
         // private bool NumbersEqual(int toCheck, params int[] numbers)

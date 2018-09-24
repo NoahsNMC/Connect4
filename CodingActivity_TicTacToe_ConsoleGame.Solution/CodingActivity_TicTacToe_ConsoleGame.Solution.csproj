@@ -50,7 +50,6 @@
     <Compile Include="Controller\Controller.cs" />
     <Compile Include="Model\Gameboard.cs" />
     <Compile Include="Model\GameboardPosition.cs" />
-    <Compile Include="Model\HistoricScores.cs" />
     <Compile Include="Model\MainMenu.cs" />
     <Compile Include="Model\MenuOption.cs" />
     <Compile Include="Model\Scores.cs" />

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace CodingActivity_TicTacToe_ConsoleGame
 {
@@ -33,8 +34,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         private static Gameboard _gameboard = new Gameboard();
         private static ConsoleView _gameView = new ConsoleView(_gameboard);
 
-        private Scores _scores;
-        private HistoricScores _historicScores;
+        private List<Scoreboard> _scoreboard = new List<Scoreboard>();
 
         #endregion
 
@@ -60,7 +60,14 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 switch (_usersChoice)
                 {
                     case 0: //Play
-                        _gameView.DisplayWhosOnFirst();
+                        if (_playingGame)
+                        {
+                            _gameboard.InitializeGameboard();
+                            _gameView.InitializeView();
+                            _playingRound = true;
+                        }
+                        _roundNumber++;
+                        _gameboard.CurrentRoundState = _gameView.DisplayWhosOnFirst();
                         PlayGame();
                         break;
 
@@ -70,13 +77,17 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                         break;
 
                     case 2: //Gamestats
-                        _gameView.DisplayCurrentGameStats();
+                        _gameView.DisplayCurrentGameStatus( _roundNumber, _playerXNumberOfWins, _playerONumberOfWins, _numberOfCatsGames );
                         _sendBack = false;
                         break;
 
                     case 3: //Historic Scores
-                        _historicScores = JsonServices.ReadJsonFile("scores.json") as HistoricScores;
-                        _gameView.DisplayPreviousGameStats(_historicScores.scoreboard);
+                        if(File.Exists("Data\\scores.json")) {
+                            _scoreboard = JsonServices.ReadJsonFile("scores.json") as List<Scoreboard>;
+                            _gameView.DisplayPreviousGameStats(_scoreboard);
+                        }
+                        else
+                            _gameView.DisplayNoGameStats();
                         _sendBack = false;
                         break;
 
@@ -116,10 +127,8 @@ namespace CodingActivity_TicTacToe_ConsoleGame
             _playerXNumberOfWins = 0;
             _numberOfCatsGames = 0;
 
-            //
-            // Initialize game board status
-            //
-            _gameboard.InitializeGameboard();
+            if (File.Exists("Data\\scores.json"))
+                _scoreboard = JsonServices.ReadJsonFile("scores.json") as List<Scoreboard>;
         }
 
         /// <summary>
@@ -139,43 +148,13 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     // Perform the task associated with the current game and round state
                     //
                     ManageGameStateTasks();
-
-                    //
-                    // Evaluate and update the current game board state
-                    //
-                    _gameboard.UpdateGameboardState();
                 }
 
                 //
                 // Round Complete: Display the results
                 //
                 _gameView.DisplayCurrentGameStatus(_roundNumber, _playerXNumberOfWins, _playerONumberOfWins, _numberOfCatsGames);
-
-                //
-                // Confirm no major user errors
-                //
-                if (_gameView.CurrentViewState != ConsoleView.ViewState.PlayerUsedMaxAttempts ||
-                    _gameView.CurrentViewState != ConsoleView.ViewState.PlayerTimedOut)
-                {
-                    //
-                    // Prompt user to play another round
-                    //
-                    _playingGame = _gameView.DisplayNewRoundPrompt();
-
-                    if (_playingGame)
-                    {
-                        _gameboard.InitializeGameboard();
-                        _gameView.InitializeView();
-                        _playingRound = true;
-                    }
-                }
-                //
-                // Major user error recorded, end game
-                //
-                else
-                {
-                    _playingGame = false;
-                }
+                break;
             }
 
             // Removing _gameView.DisplayClosingScreen(); because main menu will handle this
@@ -195,15 +174,7 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                     {
                         case Gameboard.GameboardState.NewRound:
                             _roundNumber++;
-
-                            if (_gameView.DisplayWhosOnFirst() == 0)
-                            {
-                                _gameboard.CurrentRoundState = Gameboard.GameboardState.PlayerXTurn;
-                            } else
-                            {
-                                _gameboard.CurrentRoundState = Gameboard.GameboardState.PlayerOTurn;
-                            }
-
+                            _gameboard.CurrentRoundState = _gameView.DisplayWhosOnFirst();
                             break;
 
                         case Gameboard.GameboardState.PlayerXTurn:
@@ -216,11 +187,27 @@ namespace CodingActivity_TicTacToe_ConsoleGame
 
                         case Gameboard.GameboardState.PlayerXWin:
                             _playerXNumberOfWins++;
+                            Scoreboard score = new Scoreboard()
+                            {
+                                gameTime = DateTime.Now,
+                                playerNames = new string[] { "Player X", "Player O" },
+                                playerScores = new int[] { _playerXNumberOfWins, _playerONumberOfWins }
+                            };
+                            _scoreboard.Add(score);
+                            JsonServices.WriteJsonFile(_scoreboard, "scores.json");
                             _playingRound = false;
                             break;
 
                         case Gameboard.GameboardState.PlayerOWin:
                             _playerONumberOfWins++;
+                            score = new Scoreboard()
+                            {
+                                gameTime = DateTime.Now,
+                                playerNames = new string[] { "Player X", "Player O" },
+                                playerScores = new int[] { _playerXNumberOfWins, _playerONumberOfWins }
+                            };
+                            _scoreboard.Add(score);
+                            JsonServices.WriteJsonFile(_scoreboard, "scores.json");
                             _playingRound = false;
                             break;
 
@@ -259,6 +246,12 @@ namespace CodingActivity_TicTacToe_ConsoleGame
         {
             int gameboardColumn = _gameView.GetPlayerPositionChoice();
 
+            if( gameboardColumn == -2 )
+            {
+                //Quit Game here.
+                _playingRound = false;
+            }
+
             if (_gameView.CurrentViewState != ConsoleView.ViewState.PlayerUsedMaxAttempts && gameboardColumn > -1)
             {
                 //
@@ -269,6 +262,14 @@ namespace CodingActivity_TicTacToe_ConsoleGame
                 {
                     _gameView.DisplayPieceDrop(row, gameboardColumn);
                     _gameboard._board[row, gameboardColumn].Status = currentPlayerPiece;
+                    if(_gameboard.WinCheckFourInARow(row, gameboardColumn, currentPlayerPiece))
+                    {
+                        if (currentPlayerPiece == PlayerPiece.X)
+                            _gameboard._currentRoundState = Gameboard.GameboardState.PlayerXWin;
+                        else
+                            _gameboard._currentRoundState = Gameboard.GameboardState.PlayerOWin;
+                        return;
+                    }
                     _gameboard.SetNextPlayer();
                     ClearBuffer();
                 }
